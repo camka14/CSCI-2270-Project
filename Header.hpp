@@ -1,6 +1,7 @@
 #include <string>
-// Add #includes
+#include <iostream>
 
+using namespace std;
 
 struct Word
 {
@@ -37,17 +38,22 @@ class Heap
 	public:
     Heap(int queueSize);
     ~Heap();
-    void enqueue (std::string _groupName, int _groupSize, int _cookingTime);
+    void enqueue (string sentence, float score);
     void dequeue();
-    GroupNode peek();
+    Sent peek();
     bool isFull();
     bool isEmpty();
+    int parent(int index);
+    int leftChild(int index);
+    int rightChild(int index);
+    void swap(Sent *a, Sent *b);
+
 
     private:
     void repairUpward(int nodeIndex);
     void repairDownward(int nodeIndex);
 
-    GroupNode* priorityQueue;
+    Sent* commonQueue;
     int currentQueueSize;
     int maxQueueSize;
 };
