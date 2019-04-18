@@ -21,7 +21,7 @@ bool Stack::isEmpty()
 		return false;
 }
 
-void Stack::push(Sent sentence)
+void Stack::push(vector<string> sentence)
 {
 	Sent *temp = new Sent();
 	temp->sentence = sentence;

@@ -2,9 +2,6 @@
 
 using namespace std;
 
-float getIDF(char refCorpus, string word);
-float getTF();
-
 int main(int argc, char const *argv[])
 {
 	ifstream mainText;
@@ -14,19 +11,19 @@ int main(int argc, char const *argv[])
 	Stack sentStack;
 	// Hash wordHash;
 	// Heap sentHeap;
-	regex compare("[\\S]+[.|!|?|\\n]");
 	stringstream strStream;
 	stringstream fixed;
+	vector<string> sentence;
+	Word *wordItem;
 	bool sentEnd = false;
 
+	regex compare("[\\S]+[.|!|?|\\n]");
 	mainText.open(argv[1]);
 	refText.open(argv[2]);
 
 	strStream << refText.rdbuf();
 
 	refCorpus = strStream.str();
-
-	Sent *sent = new Sent();
 
 	while(getline(mainText,word,' '))
 	{
@@ -36,15 +33,32 @@ int main(int argc, char const *argv[])
 		}
 		word.erase(remove_if(word.begin(), word.end(), [](char c) { return !isalpha(c); } ), word.end());
 		// wordHash.addWord(word);
-		sent->sentence.push_back(word);
+		sentence.push_back(word);
 		if(sentEnd){
-			// for(int i=0; i<sent->sentence.size(); i++)
-			// 	cout << sent->sentence[i] << " ";
-			// cout << endl << endl;
+			sentStack.push(sentence);
 			sentEnd = false;
-			Sent *sent = new Sent();
+			sentence.clear();
 		}
 	}
+
+	while(!sentStack.isEmpty())
+	{
+		Sent *sentItem = sentStack.peek();
+		sentStack.pop();
+
+		for(int i=0; i<sentItem->sentence.size(); i++)
+		{
+			// wordItem = wordHash.getWord(sentItem->sentence[i]);
+
+			if(wordItem->TF == 0){
+				getTF(wordItem);
+				getIDF(refCorpus, wordItem);
+			}
+			sentItem->score += wordItem->TF+wordItem->IDF;
+		}
+		// sentHeap.enqueue(sentItem);
+	}
+
 
 	
 	mainText.close();

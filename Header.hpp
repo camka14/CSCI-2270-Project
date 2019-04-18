@@ -29,7 +29,7 @@ public:
 	Stack();
 	~Stack();
 	bool isEmpty();
-	void push(Sent sentence);
+	void push(vector<string> sentence);
 	void pop();
 	Sent* peek();
 	Sent* getStackHead() { return stackHead; } // no need to implement this
@@ -42,7 +42,7 @@ class Heap
 public:
     Heap(int queueSize);
     ~Heap();
-    void enqueue (std::string _groupName, int _groupSize, int _cookingTime);
+    void enqueue(std::string _groupName, int _groupSize, int _cookingTime);
     void dequeue();
     Sent peek();
     bool isFull();
@@ -81,3 +81,6 @@ private:
     int numItems;
     int numCollisions;
 };
+
+void getIDF(string refCorpus, Word *word);
+void getTF(Word *word);
