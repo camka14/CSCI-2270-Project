@@ -30,9 +30,10 @@ class Stack
 	Sent* peek();
 	Sent* getStackHead() { return stackHead; } // no need to implement this
 private:
-	Operand* stackHead; // pointer to the top of the stac
+	Sent* stackHead; // pointer to the top of the stac
 };
 
+//This class is done
 class Heap
 {
 	public:

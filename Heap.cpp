@@ -6,6 +6,8 @@
 using namespace std;
 
 Heap::Heap(int queueSize) {
+	// creates Heap with an array of pointers
+	// each pointer, points to an index
 	this->maxQueueSize = queueSize;
 	Sent *heap = new Sent[queueSize];
 	this->commonQueue = heap;
