@@ -10,12 +10,11 @@ int main(int argc, char const *argv[])
 	ifstream mainText;
 	ifstream refText;
 	string refCorpus;
-	// Stack sentStack;
+	string word;
+	Stack sentStack;
 	// Hash wordHash;
 	// Heap sentHeap;
-	string word;
-	regex compare("[\\S]+[.|!|?]");
-	string sentence;
+	regex compare("[\\S]+[.|!|?|\\n]");
 	stringstream strStream;
 	stringstream fixed;
 	bool sentEnd = false;
@@ -32,18 +31,21 @@ int main(int argc, char const *argv[])
 	while(getline(mainText,word,' '))
 	{
 		if(regex_match(word,compare)){
+			cout << word << endl;
 			sentEnd = true;
 		}
 		word.erase(remove_if(word.begin(), word.end(), [](char c) { return !isalpha(c); } ), word.end());
+		// wordHash.addWord(word);
 		sent->sentence.push_back(word);
 		if(sentEnd){
-			// add to stack
-			cout << sentence << endl;
+			// for(int i=0; i<sent->sentence.size(); i++)
+			// 	cout << sent->sentence[i] << " ";
+			// cout << endl << endl;
 			sentEnd = false;
-			delete sent;
 			Sent *sent = new Sent();
 		}
-		cout << word << endl;
 	}
+
+	
 	mainText.close();
 }

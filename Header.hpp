@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <regex>
-// Add #includes
+
 using namespace std;
 
 struct Word
@@ -25,11 +25,11 @@ struct Sent
 
 class Stack
 {
-
+public:
 	Stack();
 	~Stack();
 	bool isEmpty();
-	void push(float num);
+	void push(Sent sentence);
 	void pop();
 	Sent* peek();
 	Sent* getStackHead() { return stackHead; } // no need to implement this
@@ -39,7 +39,7 @@ private:
 
 class Heap
 {
-	public:
+public:
     Heap(int queueSize);
     ~Heap();
     void enqueue (std::string _groupName, int _groupSize, int _cookingTime);
@@ -48,7 +48,7 @@ class Heap
     bool isFull();
     bool isEmpty();
 
-    private:
+private:
     void repairUpward(int nodeIndex);
     void repairDownward(int nodeIndex);
 
@@ -59,7 +59,7 @@ class Heap
 
 class Hash
 {
-	public:
+public:
     Hash(int hashTableSize);
     ~Hash();
     void addWord(std::string word);
@@ -70,7 +70,7 @@ class Hash
     int getNumItems();
     int getTotalNumWords();
 
-  private:
+private:
     /* member functions */
     unsigned int getHash(std::string word);
     Word* searchTable(std::string word);
