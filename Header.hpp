@@ -1,6 +1,11 @@
 #include <string>
+#include <cstring>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <regex>
 // Add #includes
-
+using namespace std;
 
 struct Word
 {
@@ -13,8 +18,8 @@ struct Word
 
 struct Sent
 {
-	string sent;
-	float score;
+	vector<string> sentence;
+	float score = 0;
 	Sent *next;
 };
 
@@ -29,7 +34,7 @@ class Stack
 	Sent* peek();
 	Sent* getStackHead() { return stackHead; } // no need to implement this
 private:
-	Operand* stackHead; // pointer to the top of the stac
+	Sent* stackHead; // pointer to the top of the stac
 };
 
 class Heap
@@ -39,7 +44,7 @@ class Heap
     ~Heap();
     void enqueue (std::string _groupName, int _groupSize, int _cookingTime);
     void dequeue();
-    GroupNode peek();
+    Sent peek();
     bool isFull();
     bool isEmpty();
 
@@ -47,9 +52,9 @@ class Heap
     void repairUpward(int nodeIndex);
     void repairDownward(int nodeIndex);
 
-    GroupNode* priorityQueue;
-    int currentQueueSize;
-    int maxQueueSize;
+    Sent* HeapArray;
+    int currentHeapSize;
+    int maxHeapSize;
 };
 
 class Hash
@@ -68,10 +73,10 @@ class Hash
   private:
     /* member functions */
     unsigned int getHash(std::string word);
-    wordItem* searchTable(std::string word);
+    Word* searchTable(std::string word);
 
     /* instance variables */
-    wordItem** hashTable;
+    Word** hashTable;
     int hashTableSize;
     int numItems;
     int numCollisions;
