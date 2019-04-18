@@ -1,22 +1,52 @@
-#include <iostream>
-#include <string>
-#include <stack>
-
 #include "Header.hpp"
 
-using namespace std;
-
-Stack() {
-	stack<Sent> sentStore;
+Stack::Stack()
+{
+	stackHead = NULL;
 }
-~Stack();
-bool isEmpty() {
-	if(stackHead == nullptr)
+
+Stack::~Stack()
+{
+	while(!isEmpty())
+	{
+		pop();
+	}
+}
+
+bool Stack::isEmpty()
+{
+	if(stackHead == NULL)
 		return true;
-	return false;
+	else
+		return false;
 }
-void push(Sent sentence) {
 
+void Stack::push(Sent sentence)
+{
+	Sent *temp = new Sent();
+	temp->sentence = sentence;
+	temp->next = stackHead;
+	stackHead = temp;
 }
-void pop();
-Sent* peek();
+
+void Stack::pop()
+{
+	if(!isEmpty()){
+		Sent *temp;
+		temp = stackHead;
+		stackHead = stackHead->next;
+		delete temp;
+	}else{
+		cout << "Stack empty, cannot pop an item." << endl;
+	}
+}
+
+Sent* Stack::peek()
+{
+	if(!isEmpty()){
+		return stackHead;
+	}else{
+		cout << "Stack empty, cannot peek." << endl;
+		return NULL;
+	}
+}
