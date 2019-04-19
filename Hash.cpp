@@ -5,11 +5,15 @@
 
 using namespace std;
 
-Hash(int hashTableSize){
-
+Hash::Hash(int hashTableSize){
+	this->hashTableSize = hashTableSize;
+	hashTable = new Word*[hashTableSize];
+	for(int i = 0; i < hashTableSize; i++) {
+		hashTable[i] = nullptr;
+	}
 }
 ~Hash();
-void addWord(string word) {
+void Hash::addWord(string word) {
 	if(!isInTable(word))
 	{
 		int index = getHash(word);
@@ -26,7 +30,7 @@ void addWord(string word) {
 		cout << "Already exists: " << word << endl;
 	}
 }
-bool isInTable(string word) {
+bool Hash::isInTable(string word) {
 	int index = getHash(word);
 
 	node *temp = hashTable[index];
@@ -38,19 +42,26 @@ bool isInTable(string word) {
 	}
 	return nullptr;
 }
-void incrementCount(string word) {
+void Hash::incrementCount(string word) {
 	bool isFound = isInTable(word);
 	Word* item = searchTable(word);
 	if (isFound) {
 		++(item->count); // Do we need to increment count here?
 	}
 }
-void printTopN(int n);
-int getNumCollisions();
-int getNumItems();
-int getTotalNumWords();
+int Hash::getTotalNumWords() {
+	int count = 0;
+	Word* temp1 = hashTable[0];
 
-Word* createNode(string word, Word* next){
+	while(temp1) {
+		count++;
+		temp1 = temp1->next;
+	}
+
+	return count;
+}
+
+Word* Hash::createNode(string word, Word* next){
 	Word* node = new Word;
 	node->word = word;
 	node->next = next;
@@ -59,7 +70,7 @@ Word* createNode(string word, Word* next){
 
 
 /* member functions */
-unsigned int getHash(string word) {
+unsigned int Hash::getHash(string word) {
 	unsigned int​ hashValue = ​5381​; 
     int ​length = word.​length​();
     
@@ -69,4 +80,16 @@ unsigned int getHash(string word) {
     hashValue %= hashTableSize; 
     return ​hashValue; 
 }
-Word* searchTable(string word);
+Word* Hash::searchTable(string word) {
+	int index = getHash(word);
+
+	Word* temp = hashTable[index];
+	while(temp) {
+
+		if(temp->word == word)
+			return temp;
+		else 
+			temp = temp->next;
+	}
+	return nullptr;
+}
