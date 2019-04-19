@@ -36,7 +36,6 @@ int main(int argc, char const *argv[])
 		// wordHash.addWord(word);
 		newSent->sentence.push_back(word);
 		if(sentEnd){
-			cout << endl << endl;
 			sentStack.push(newSent);
 			sentEnd = false;
 			newSent = new Sent;
@@ -46,23 +45,20 @@ int main(int argc, char const *argv[])
 	while(!sentStack.isEmpty())
 	{
 		Sent *sentItem = sentStack.peek();
-		sentStack.pop();
-
-		if(sentStack.isEmpty())
-			cout << endl << endl <<"true"<< endl<< endl;
-
+		// cout << sentItem->sentence.size() << endl;
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
-			// cout << sentItem->sentence[i] << " ";
+			cout << sentItem->sentence[i] << " ";
 			// wordItem = wordHash.getWord(sentItem->sentence[i]);
-			if(wordItem->TF == 0){
-				getTF(wordItem);
-				getIDF(refCorpus, wordItem);
-			}
-			sentItem->score += wordItem->TF+wordItem->IDF;
+			// if(wordItem->TF == 0){
+			// 	getTF(wordItem);
+			// 	getIDF(refCorpus, wordItem);
+			// }
+			// sentItem->score += wordItem->TF+wordItem->IDF;
 		}
-		// cout << endl << endl;
+		cout << endl << endl;
 		// sentHeap.enqueue(sentItem);
+		sentStack.pop();
 	}
 
 
