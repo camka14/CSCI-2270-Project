@@ -3,7 +3,6 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <regex>
 
 using namespace std;
@@ -30,7 +29,7 @@ public:
 	Stack();
 	~Stack();
 	bool isEmpty();
-	void push(vector<string> sentence);
+	void push(Sent *sentence);
 	void pop();
 	Sent* peek();
 private:
@@ -91,3 +90,4 @@ private:
 
 void getIDF(string refCorpus, Word *word);
 void getTF(Word *word);
+Sent* makeNewSent();

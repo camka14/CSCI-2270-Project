@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 	Word *wordItem;
 	bool sentEnd = false;
 
-	regex compare("[\\S]+[.|!|?|\\n]");
+	regex compare("[\\S]+[.|!|?|\\t]");
 	mainText.open(argv[1]);
 	refText.open(argv[2]);
 
@@ -25,19 +25,21 @@ int main(int argc, char const *argv[])
 
 	refCorpus = strStream.str();
 
+	Sent *newSent = new Sent;
+
 	while(getline(mainText,word,' '))
 	{
 		if(regex_match(word,compare)){
-			cout << word << endl;
 			sentEnd = true;
 		}
 		word.erase(remove_if(word.begin(), word.end(), [](char c) { return !isalpha(c); } ), word.end());
 		// wordHash.addWord(word);
-		sentence.push_back(word);
+		newSent->sentence.push_back(word);
 		if(sentEnd){
-			sentStack.push(sentence);
+			cout << endl << endl;
+			sentStack.push(newSent);
 			sentEnd = false;
-			sentence.clear();
+			newSent = new Sent;
 		}
 	}
 
@@ -46,16 +48,20 @@ int main(int argc, char const *argv[])
 		Sent *sentItem = sentStack.peek();
 		sentStack.pop();
 
+		if(sentStack.isEmpty())
+			cout << endl << endl <<"true"<< endl<< endl;
+
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
+			// cout << sentItem->sentence[i] << " ";
 			// wordItem = wordHash.getWord(sentItem->sentence[i]);
-
 			if(wordItem->TF == 0){
 				getTF(wordItem);
 				getIDF(refCorpus, wordItem);
 			}
 			sentItem->score += wordItem->TF+wordItem->IDF;
 		}
+		// cout << endl << endl;
 		// sentHeap.enqueue(sentItem);
 	}
 
