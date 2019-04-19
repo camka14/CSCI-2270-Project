@@ -2,7 +2,7 @@
 
 Stack::Stack()
 {
-	stackHead = NULL;
+	stackHead = nullptr;
 }
 
 Stack::~Stack()
@@ -15,25 +15,26 @@ Stack::~Stack()
 
 bool Stack::isEmpty()
 {
-	if(stackHead == NULL)
+	if(stackHead == nullptr){
+		cout << "true" << endl;
 		return true;
-	else
+	}
+	else{
+		cout << "false" << endl;
 		return false;
+	}
 }
 
-void Stack::push(vector<string> sentence)
+void Stack::push(Sent *sentence)
 {
-	Sent *temp = new Sent();
-	temp->sentence = sentence;
-	temp->next = stackHead;
-	stackHead = temp;
+	sentence->next = stackHead;
+	stackHead = sentence;
 }
 
 void Stack::pop()
 {
 	if(!isEmpty()){
-		Sent *temp;
-		temp = stackHead;
+		Sent *temp = stackHead;
 		stackHead = stackHead->next;
 		delete temp;
 	}else{
@@ -44,6 +45,11 @@ void Stack::pop()
 Sent* Stack::peek()
 {
 	if(!isEmpty()){
+		for(int i=0; i<stackHead->sentence.size(); i++)
+		{
+			cout << stackHead->sentence[i] << " ";
+		}
+		cout << endl << endl;
 		return stackHead;
 	}else{
 		cout << "Stack empty, cannot peek." << endl;
