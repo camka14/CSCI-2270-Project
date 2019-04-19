@@ -32,10 +32,11 @@ void Stack::push(Sent *sentence)
 void Stack::pop()
 {
 	if(!isEmpty()){
-		Sent *temp = stackHead;
+		Sent *temp stackHead;
 		stackHead = stackHead->next;
 		delete temp;
-	}else{
+	}
+	else{
 		cout << "Stack empty, cannot pop an item." << endl;
 	}
 }
