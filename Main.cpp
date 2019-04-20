@@ -12,12 +12,14 @@ int main(int argc, char const *argv[])
 	// Hash wordHash;
 	// Heap sentHeap;
 	stringstream strStream;
-	stringstream fixed;
 	vector<string> sentence;
 	Word *wordItem;
 	bool sentEnd = false;
+	char letter;
 
-	regex compare("[\\S]+[.|!|?|\\t]");
+	regex nonWord("[.|!|?]");
+	regex wordChar("[a-zA-Z]");
+	regex whiteSpace("[\\s]");
 	mainText.open(argv[1]);
 	refText.open(argv[2]);
 
@@ -27,25 +29,38 @@ int main(int argc, char const *argv[])
 
 	Sent *newSent = new Sent;
 
-	while(getline(mainText,word,' '))
+	while(mainText.get(letter))
 	{
-		if(regex_match(word,compare)){
+		if(regex_match(&letter,nonWord))
+		{
+			if(word != ""){
+				// wordHash.addWord(word);
+				newSent->sentence.push_back(word);
+				word = "";
+
+				sentStack.push(newSent);
+				sentEnd = false;
+				newSent = new Sent;
+			}
 			sentEnd = true;
 		}
-		word.erase(remove_if(word.begin(), word.end(), [](char c) { return !isalpha(c); } ), word.end());
-		// wordHash.addWord(word);
-		newSent->sentence.push_back(word);
-		if(sentEnd){
-			sentStack.push(newSent);
-			sentEnd = false;
-			newSent = new Sent;
+		else if(regex_match(&letter,wordChar))
+		{
+			word += letter;
+		}
+		else if(regex_match(&letter,whiteSpace))
+		{
+			if(word != ""){
+				// wordHash.addWord(word);
+				newSent->sentence.push_back(word);
+				word = "";
+			}
 		}
 	}
 
 	while(!sentStack.isEmpty())
 	{
 		Sent *sentItem = sentStack.peek();
-		// cout << sentItem->sentence.size() << endl;
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
 			cout << sentItem->sentence[i] << " ";
