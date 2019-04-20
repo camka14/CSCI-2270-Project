@@ -72,17 +72,19 @@ Word* Hash::createNode(string word, Word* next){
 	return node;
 }
 
-/* member functions */
-unsigned int Hash::getHash(string word) {
-	unsigned int​ hashValue = ​5381​; 
-    int ​length = word.​length​();
-    
-    for ​(​int​ i=​0​;i<length;i++) {
-        hashValue=((hashValue<<​5​)+hashValue) + word[i]; 
-    }
-    hashValue %= hashTableSize; 
-    return ​hashValue; 
+unsigned int Hash::getHash(string word)
+{
+	unsigned int hashValue = 5381;
+	int length = word.length();
+	for (int i=0;i<length;i++)
+	{
+		hashValue=((hashValue<<5)+hashValue) + word[i];
+	}
+	hashValue %= hashTableSize;
+	return hashValue;
 }
+
+
 Word* Hash::searchTable(string word) {
 	int index = getHash(word);
 
@@ -118,7 +120,7 @@ void Hash::getIDFCount(string refCorpus)
 	while(is.get(letter))
 	{
 		if(regex_match(&letter,wordChar))
-			word = wordChar + word;
+			word += letter;
 		else if(regex_match(&letter,nonWordChar))
 		{
 			if(word != ""){
