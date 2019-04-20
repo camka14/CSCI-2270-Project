@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 	string word;
 	Stack sentStack;
 	Hash wordHash(500);
-	Heap sentHeap;
+	Heap sentHeap(20);
 	stringstream strStream;
 	vector<string> sentence;
 	Word *wordItem;
@@ -67,8 +67,8 @@ int main(int argc, char const *argv[])
 		{
 			wordItem = wordHash.getWord(sentItem->sentence[i]);
 			if(wordItem->TF == 0){
-				wordItem.getTF(wordItem);
-				wordItem.getIDF(refCorpus, wordItem);
+				wordHash.getTF(wordItem);
+				wordHash.getIDF(wordItem);
 			}
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}

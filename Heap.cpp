@@ -9,8 +9,8 @@ Heap::Heap(int queueSize) {
 	// creates Heap with an array of pointers
 	// each pointer, points to an index
 	this->maxQueueSize = queueSize;
-	Sent *heap = new Sent[queueSize];
-	this->commonQueue = heap;
+	Sent **heap = new Sent*[queueSize];
+	this->HeapArray = heap;
 }
 
 Heap::~Heap() {
@@ -24,15 +24,18 @@ void Heap::swap(Sent *a, Sent *b)
   *b = temp;
 }
 
-void Heap::enqueue (string sentence, float score) {
-	Sent *Node = new Sent;
-	commonQueue[currentQueueSize] = Node;
-
+void Heap::enqueue (Sent *sentence) {
 	if(isEmpty()) {
-		commonQueue[currentQueueSize] = value; 
+		HeapArray[currentQueueSize] = sentence; 
 	}
-	else {
-		commonQueue[currentQueueSize] = value;
+	else if(isFull()) {
+		doubleArr();
+		HeapArray[currentQueueSize] = sentence;
+		repairUpward(currentQueueSize);
+		currentQueueSize++;
+	}
+	else{
+		HeapArray[currentQueueSize] = sentence;
 		repairUpward(currentQueueSize);
 		currentQueueSize++;
 	}
@@ -40,18 +43,16 @@ void Heap::enqueue (string sentence, float score) {
 void Heap::dequeue() {
 	if(isEmpty()) {
     	cout << "Heap empty, cannot dequeue" << endl;
-        return peek();
     }
 
     int size = currentQueueSize - 1;
-    commonQueue[0] = commonQueue[size];
+    HeapArray[0] = HeapArray[size];
     currentQueueSize = size;
 
     repairDownward(0);
-    return peek();
 }
-Sent Heap::peek() {
-	return commonQueue[0];
+Sent* Heap::peek() {
+	return HeapArray[0];
 }
 bool Heap::isFull() {
 	if(currentQueueSize == maxQueueSize)
@@ -86,20 +87,42 @@ int Heap::rightChild(int index)
 }
 
 //private:
-void Heap::repairUpward(int nodeIndex);
+void Heap::repairUpward(int nodeIndex) {
+  int p = parent(nodeIndex);
+  if(p >= 0 && HeapArray[p]->score > HeapArray[nodeIndex]->score){
+    swap(HeapArray[nodeIndex],HeapArray[p]);
+    repairUpward(p);
+  }
+  else if(p >= 0 && HeapArray[p]->score == HeapArray[nodeIndex]->score && HeapArray[p]->score > HeapArray[nodeIndex]->score){
+    swap(HeapArray[nodeIndex],HeapArray[p]);
+    repairUpward(p);
+  }
+}
 void Heap::repairDownward(int nodeIndex) {
-	int l = leftChild(index);
- 	int r = rightChild(index);
- 	int largest = index;
+	int l = leftChild(nodeIndex);
+ 	int r = rightChild(nodeIndex);
+ 	int largest = nodeIndex;
  	int temp;
 
  	//TODO
- 	if(l < currentQueueSize && commonQueue[l]<commonQueue[largest])
+ 	if(l < currentQueueSize && HeapArray[l]->score<HeapArray[largest]->score)
    		largest = l;
- 	if(r < currentQueueSize && commonQueue[r]<commonQueue[largest])
+ 	if(r < currentQueueSize && HeapArray[r]->score<HeapArray[largest]->score)
    		largest = r;
- 	if(largest !=index){
-   		swap(commonQueue[index],commonQueue[largest]);
+ 	if(largest !=nodeIndex){
+   		swap(HeapArray[nodeIndex],HeapArray[largest]);
     	repairDownward(largest);
   }
+}
+
+void Heap::doubleArr() {
+	Sent **nArr = new Sent*[2*currentQueueSize];
+	for (int i=0; i <currentQueueSize; i++) {
+		nArr[i] = *(HeapArray+i);
+	}
+
+	currentQueueSize = 2*currentQueueSize;
+
+	delete[] HeapArray;
+	HeapArray = nArr;
 }

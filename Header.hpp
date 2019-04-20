@@ -15,6 +15,7 @@ struct Word
 	float IDF = 0;
 	int countTF = 0;
 	int countIDF = 0;
+    Word* next;
 };
 
 struct Sent
@@ -43,10 +44,9 @@ class Heap
 public:
     Heap(int queueSize);
     ~Heap();
-    void enqueue(std::string _groupName, int _groupSize, int _cookingTime);
-    void enqueue (string sentence, float score);
+    void enqueue (Sent *sentence);
     void dequeue();
-    Sent peek();
+    Sent* peek();
     bool isFull();
     bool isEmpty();
     int parent(int index);
@@ -58,10 +58,11 @@ public:
 private:
     void repairUpward(int nodeIndex);
     void repairDownward(int nodeIndex);
+    void doubleArr();
 
-    Sent* HeapArray;
-    int currentHeapSize;
-    int maxHeapSize;
+    Sent** HeapArray;
+    int currentQueueSize;
+    int maxQueueSize;
 };
 
 class Hash
@@ -75,8 +76,10 @@ public:
     void printTopN(int n);
     int getTotalNumWords();
     void getIDFCount(string refCorpus);
-    void getIDF(string word);
+    void getIDF(Word *word);
     void getTF(Word *word);
+    Word* getWord(string word);
+    Word* createNode(string word, Word* next);
 
 private:
     /* member functions */
@@ -87,5 +90,6 @@ private:
     Word** hashTable;
     int hashTableSize;
     int numItems;
+    int totalCountRF;
     int numCollisions;
 };

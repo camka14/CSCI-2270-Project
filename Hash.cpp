@@ -11,11 +11,13 @@ Hash::Hash(int hashTableSize){
 	for(int i = 0; i < hashTableSize; i++) {
 		hashTable[i] = nullptr;
 	}
+	totalCountRF = 0;
 }
 Hash::~Hash(){
 
 }
 void Hash::addWord(string word) {
+
 	if(!isInTable(word))
 	{
 		int index = getHash(word);
@@ -35,20 +37,20 @@ void Hash::addWord(string word) {
 bool Hash::isInTable(string word) {
 	int index = getHash(word);
 
-	node *temp = hashTable[index];
+	Word *temp = hashTable[index];
 	while(temp) {
 		if(temp->word == word)
 			return true;
 		else 
 			temp = temp->next;
 	}
-	return nullptr;
+	return false;
 }
 void Hash::incrementCount(string word) {
 	bool isFound = isInTable(word);
 	Word* item = searchTable(word);
 	if (isFound) {
-		++(item->count); // Do we need to increment count here?
+		++(item->countTF); // Do we need to increment count here?
 	}
 }
 int Hash::getTotalNumWords() {
@@ -69,7 +71,6 @@ Word* Hash::createNode(string word, Word* next){
 	node->next = next;
 	return node;
 }
-
 
 /* member functions */
 unsigned int Hash::getHash(string word) {
@@ -98,18 +99,18 @@ Word* Hash::searchTable(string word) {
 
 void Hash::getTF(Word *word)
 {
-	word.TF = log(1+word.countTF);
+	word->TF = log(word->countTF);
 }
 
-void Hash::getIDF(string word)
+void Hash::getIDF(Word *word)
 {
-	Word *wordItem = searchTable(word);
-	wordItem.IDF = log(totalCount/wordItem.countIDF);
+	word->IDF = log(totalCountRF/(1+word->countIDF));
 }
 
 void Hash::getIDFCount(string refCorpus)
 {
 	char letter;
+	string word;
 	stringstream is(refCorpus);
 	regex wordChar("[a-zA-Z]");
 	regex nonWordChar("[\\s|!|?|.]");
@@ -117,17 +118,21 @@ void Hash::getIDFCount(string refCorpus)
 	while(is.get(letter))
 	{
 		if(regex_match(&letter,wordChar))
-			word += wordChar;
+			word = wordChar + word;
 		else if(regex_match(&letter,nonWordChar))
 		{
 			if(word != ""){
 				if(isInTable(word)){
 					Word *wordItem = searchTable(word);
-					wordItem.countIDF++;
-					totalCount++;
+					wordItem->countIDF++;
+					totalCountRF++;
 				}
 				word = "";
 			}
 		}
 	}
+}
+
+Word* Hash::getWord(string word) {
+	return searchTable(word);
 }
