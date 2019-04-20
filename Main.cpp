@@ -9,8 +9,8 @@ int main(int argc, char const *argv[])
 	string refCorpus;
 	string word;
 	Stack sentStack;
-	// Hash wordHash;
-	// Heap sentHeap;
+	Hash wordHash(500);
+	Heap sentHeap;
 	stringstream strStream;
 	vector<string> sentence;
 	Word *wordItem;
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 		if(regex_match(&letter,nonWord))
 		{
 			if(word != ""){
-				// wordHash.addWord(word);
+				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
 				word = "";
 
@@ -51,28 +51,28 @@ int main(int argc, char const *argv[])
 		else if(regex_match(&letter,whiteSpace))
 		{
 			if(word != ""){
-				// wordHash.addWord(word);
+				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
 				word = "";
 			}
 		}
 	}
 
+	wordHash.getIDFCount(refCorpus);
+
 	while(!sentStack.isEmpty())
 	{
 		Sent *sentItem = sentStack.peek();
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
-			cout << sentItem->sentence[i] << " ";
-			// wordItem = wordHash.getWord(sentItem->sentence[i]);
-			// if(wordItem->TF == 0){
-			// 	getTF(wordItem);
-			// 	getIDF(refCorpus, wordItem);
-			// }
-			// sentItem->score += wordItem->TF+wordItem->IDF;
+			wordItem = wordHash.getWord(sentItem->sentence[i]);
+			if(wordItem->TF == 0){
+				wordItem.getTF(wordItem);
+				wordItem.getIDF(refCorpus, wordItem);
+			}
+			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		cout << endl << endl;
-		// sentHeap.enqueue(sentItem);
+		sentHeap.enqueue(sentItem);
 		sentStack.pop();
 	}
 

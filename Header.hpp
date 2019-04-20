@@ -73,9 +73,10 @@ public:
     bool isInTable(std::string word);
     void incrementCount(std::string word);
     void printTopN(int n);
-    int getNumCollisions();
-    int getNumItems();
     int getTotalNumWords();
+    void getIDFCount(string refCorpus);
+    void getIDF(string word);
+    void getTF(Word *word);
 
 private:
     /* member functions */
@@ -88,7 +89,3 @@ private:
     int numItems;
     int numCollisions;
 };
-
-void getIDF(string refCorpus, Word *word);
-void getTF(Word *word);
-Sent* makeNewSent();

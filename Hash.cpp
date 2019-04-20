@@ -12,7 +12,9 @@ Hash::Hash(int hashTableSize){
 		hashTable[i] = nullptr;
 	}
 }
-~Hash();
+Hash::~Hash(){
+
+}
 void Hash::addWord(string word) {
 	if(!isInTable(word))
 	{
@@ -92,4 +94,40 @@ Word* Hash::searchTable(string word) {
 			temp = temp->next;
 	}
 	return nullptr;
+}
+
+void Hash::getTF(Word *word)
+{
+	word.TF = log(1+word.countTF);
+}
+
+void Hash::getIDF(string word)
+{
+	Word *wordItem = searchTable(word);
+	wordItem.IDF = log(totalCount/wordItem.countIDF);
+}
+
+void Hash::getIDFCount(string refCorpus)
+{
+	char letter;
+	stringstream is(refCorpus);
+	regex wordChar("[a-zA-Z]");
+	regex nonWordChar("[\\s|!|?|.]");
+
+	while(is.get(letter))
+	{
+		if(regex_match(&letter,wordChar))
+			word += wordChar;
+		else if(regex_match(&letter,nonWordChar))
+		{
+			if(word != ""){
+				if(isInTable(word)){
+					Word *wordItem = searchTable(word);
+					wordItem.countIDF++;
+					totalCount++;
+				}
+				word = "";
+			}
+		}
+	}
 }
