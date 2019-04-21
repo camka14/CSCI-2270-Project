@@ -31,7 +31,7 @@ void Hash::addWord(string word) {
 		}
 	}
 	else {
-		cout << "Already exists: " << word << endl;
+		incrementCount(word);
 	}
 }
 bool Hash::isInTable(string word) {
