@@ -24,13 +24,14 @@ int main(int argc, char const *argv[])
 	while(mainText.get(letter))
 	{
 		string letterS = "";
-		letterS+= letter;
+		letterS += letter;
 		if(regex_match(letterS,nonWord))
 		{
 			if(word != ""){
 				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
 				word = "";
+
 				sentStack.push(newSent);
 				sentEnd = false;
 				newSent = new Sent;
@@ -55,7 +56,6 @@ int main(int argc, char const *argv[])
 
 	while(!sentStack.isEmpty())
 	{
-		sentWordCount = 0;
 		Sent *sentItem = sentStack.peek();
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
@@ -66,10 +66,11 @@ int main(int argc, char const *argv[])
 			}
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		sentStack.pop();
 		sentHeap.enqueue(sentItem);
+		sentStack.pop();
 	}
 
+	cout << "here" << endl;
 
 	for(int i=0; i<5; i++)
 	{

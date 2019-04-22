@@ -11,7 +11,6 @@ Heap::Heap(int queueSize) {
 	this->maxQueueSize = queueSize;
 	Sent **heap = new Sent*[queueSize];
 	this->HeapArray = heap;
-	this->currentQueueSize = 0;
 }
 
 Heap::~Heap() {
@@ -33,12 +32,13 @@ void Heap::enqueue (Sent *sentence) {
 		doubleArr();
 		HeapArray[currentQueueSize] = sentence;
 		repairUpward(currentQueueSize);
+		currentQueueSize++;
 	}
 	else{
 		HeapArray[currentQueueSize] = sentence;
 		repairUpward(currentQueueSize);
+		currentQueueSize++;
 	}
-	currentQueueSize++;
 }
 void Heap::dequeue() {
 	if(isEmpty()) {
@@ -98,7 +98,6 @@ void Heap::repairUpward(int nodeIndex) {
     repairUpward(p);
   }
 }
-
 void Heap::repairDownward(int nodeIndex) {
 	int l = leftChild(nodeIndex);
  	int r = rightChild(nodeIndex);
@@ -121,15 +120,11 @@ void Heap::doubleArr()
 	Sent **nArr = new Sent*[2*currentQueueSize];
 
 	for (int i=0; i <currentQueueSize; i++) {
-		cout << HeapArray[i] << endl;
 		nArr[i] = *(HeapArray+i);
-		for(int k=0; k<nArr[k]->sentence.size(); k++){
-			cout << nArr[k]->sentence[k]<< " ";
 	}
-	cout << endl << endl;
-}
 
-	maxQueueSize = 2*maxQueueSize;
+	maxQueueSize = 2*currentQueueSize;
+
 	delete[] HeapArray;
 	HeapArray = nArr;
 }
