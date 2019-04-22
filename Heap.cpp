@@ -28,7 +28,6 @@ void Heap::swap(Sent *a, Sent *b)
 void Heap::enqueue (Sent *sentence) {
 	if(isEmpty()) {
 		HeapArray[currentQueueSize] = sentence;
-		currentQueueSize++;
 	}
 	else if(isFull()) {
 		doubleArr();
@@ -107,9 +106,9 @@ void Heap::repairDownward(int nodeIndex) {
  	int temp;
 
  	//TODO
- 	if(l < currentQueueSize && HeapArray[l]->score<HeapArray[largest]->score)
+ 	if(l < currentQueueSize && HeapArray[l]->score > HeapArray[largest]->score)
    		largest = l;
- 	if(r < currentQueueSize && HeapArray[r]->score<HeapArray[largest]->score)
+ 	if(r < currentQueueSize && HeapArray[r]->score > HeapArray[largest]->score)
    		largest = r;
  	if(largest !=nodeIndex){
    		swap(HeapArray[nodeIndex],HeapArray[largest]);
@@ -120,13 +119,8 @@ void Heap::repairDownward(int nodeIndex) {
 void Heap::doubleArr() {
 	Sent **nArr = new Sent*[2*currentQueueSize];
 	for (int i=0; i <currentQueueSize; i++) {
-		cout << HeapArray[i] << endl;
 		nArr[i] = *(HeapArray+i);
-		for(int k=0; k<nArr[k]->sentence.size(); k++){
-			cout << nArr[k]->sentence[k]<< " ";
 	}
-	cout << endl << endl;
-}
 
 	maxQueueSize = 2*maxQueueSize;
 	delete[] HeapArray;

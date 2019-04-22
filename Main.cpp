@@ -68,7 +68,6 @@ int main(int argc, char const *argv[])
 			sentWordCount++;
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		sentItem->score /= sentWordCount;
 		sentStack.pop();
 		sentHeap.enqueue(sentItem);
 	}
