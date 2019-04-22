@@ -47,11 +47,8 @@ bool Hash::isInTable(string word) {
 	return false;
 }
 void Hash::incrementCount(string word) {
-	bool isFound = isInTable(word);
 	Word* item = searchTable(word);
-	if (isFound) {
-		++(item->countTF); // Do we need to increment count here?
-	}
+	item->countTF++;
 }
 int Hash::getTotalNumWords() {
 	int count = 0;
@@ -101,29 +98,35 @@ Word* Hash::searchTable(string word) {
 
 void Hash::getTF(Word *word)
 {
-	word->TF = log(word->countTF);
+	word->TF = (float)log(1+word->countTF);
 }
 
 void Hash::getIDF(Word *word)
 {
-	word->IDF = log(totalCountRF/(1+word->countIDF));
+	word->IDF = (float)log(totalCountRF/(1+word->countIDF));
 }
 
-void Hash::getIDFCount(string refCorpus)
+void Hash::getIDFCount(string refrence)
 {
 	char letter;
 	string word;
-	stringstream is(refCorpus);
+	
 	regex wordChar("[a-zA-Z]");
-	regex nonWordChar("[\\s|!|?|.]");
+	regex nonWordChar("[\\s|.|;|?|!]");
+	ifstream refText;
+	refText.open(refrence);
 
-	while(is.get(letter))
+	while(refText.get(letter))
 	{
-		if(regex_match(&letter,wordChar))
+		letter = 's';
+		cout << letter << " " << regex_match(&letter,wordChar) << endl;
+		if(regex_match(&letter,wordChar)){
 			word += letter;
+		}
 		else if(regex_match(&letter,nonWordChar))
 		{
 			if(word != ""){
+				cout << word << endl;
 				if(isInTable(word)){
 					Word *wordItem = searchTable(word);
 					wordItem->countIDF++;

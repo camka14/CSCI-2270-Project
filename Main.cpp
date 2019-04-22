@@ -5,13 +5,10 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
 	ifstream mainText;
-	ifstream refText;
-	string refCorpus;
 	string word;
 	Stack sentStack;
 	Hash wordHash(500);
 	Heap sentHeap(20);
-	stringstream strStream;
 	vector<string> sentence;
 	Word *wordItem;
 	bool sentEnd = false;
@@ -21,11 +18,6 @@ int main(int argc, char const *argv[])
 	regex wordChar("[a-zA-Z]");
 	regex whiteSpace("[\\s]");
 	mainText.open(argv[1]);
-	refText.open(argv[2]);
-
-	strStream << refText.rdbuf();
-
-	refCorpus = strStream.str();
 
 	Sent *newSent = new Sent;
 
@@ -58,7 +50,7 @@ int main(int argc, char const *argv[])
 		}
 	}
 
-	wordHash.getIDFCount(refCorpus);
+	wordHash.getIDFCount(argv[2]);
 
 	while(!sentStack.isEmpty())
 	{
