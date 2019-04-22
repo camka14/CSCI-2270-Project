@@ -34,13 +34,12 @@ void Heap::enqueue (Sent *sentence) {
 		doubleArr();
 		HeapArray[currentQueueSize] = sentence;
 		repairUpward(currentQueueSize);
-		currentQueueSize++;
 	}
 	else{
 		HeapArray[currentQueueSize] = sentence;
 		repairUpward(currentQueueSize);
-		currentQueueSize++;
 	}
+	currentQueueSize++;
 }
 void Heap::dequeue() {
 	if(isEmpty()) {
@@ -91,15 +90,16 @@ int Heap::rightChild(int index)
 //private:
 void Heap::repairUpward(int nodeIndex) {
   int p = parent(nodeIndex);
-  if(p >= 0 && HeapArray[p]->score > HeapArray[nodeIndex]->score){
+  if(p >= 0 && HeapArray[p]->score < HeapArray[nodeIndex]->score){
     swap(HeapArray[nodeIndex],HeapArray[p]);
     repairUpward(p);
   }
-  else if(p >= 0 && HeapArray[p]->score == HeapArray[nodeIndex]->score && HeapArray[p]->score > HeapArray[nodeIndex]->score){
+  else if(p >= 0 && HeapArray[p]->score == HeapArray[nodeIndex]->score && HeapArray[p]->score < HeapArray[nodeIndex]->score){
     swap(HeapArray[nodeIndex],HeapArray[p]);
     repairUpward(p);
   }
 }
+
 void Heap::repairDownward(int nodeIndex) {
 	int l = leftChild(nodeIndex);
  	int r = rightChild(nodeIndex);
@@ -128,8 +128,7 @@ void Heap::doubleArr() {
 	cout << endl << endl;
 }
 
-	currentQueueSize = 2*currentQueueSize;
-
+	maxQueueSize = 2*maxQueueSize;
 	delete[] HeapArray;
 	HeapArray = nArr;
 }

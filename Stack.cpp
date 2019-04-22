@@ -42,11 +42,6 @@ void Stack::pop()
 
 Sent* Stack::peek()
 {
-	// for(int i=0; i<stackHead->sentence.size(); i++)
-	// {
-	// 	cout << stackHead->sentence[i] << " ";
-	// }
-	// cout << endl<<endl;
 	if(!isEmpty()){
 		return stackHead;
 	}else{

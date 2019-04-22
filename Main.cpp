@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
 	Word *wordItem;
 	bool sentEnd = false;
 	char letter;
+	int sentWordCount;
 
 	regex nonWord("[.|!|?]");
 	regex wordChar("[a-zA-Z]");
@@ -23,24 +24,25 @@ int main(int argc, char const *argv[])
 
 	while(mainText.get(letter))
 	{
-		if(regex_match(&letter,nonWord))
+		string letterS = "";
+		letterS+= letter;
+		if(regex_match(letterS,nonWord))
 		{
 			if(word != ""){
 				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
 				word = "";
-
 				sentStack.push(newSent);
 				sentEnd = false;
 				newSent = new Sent;
 			}
 			sentEnd = true;
 		}
-		else if(regex_match(&letter,wordChar))
+		else if(regex_match(letterS,wordChar))
 		{
-			word += letter;
+			word += letterS;
 		}
-		else if(regex_match(&letter,whiteSpace))
+		else if(regex_match(letterS,whiteSpace))
 		{
 			if(word != ""){
 				wordHash.addWord(word);
@@ -54,6 +56,7 @@ int main(int argc, char const *argv[])
 
 	while(!sentStack.isEmpty())
 	{
+		sentWordCount = 0;
 		Sent *sentItem = sentStack.peek();
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
@@ -62,19 +65,21 @@ int main(int argc, char const *argv[])
 				wordHash.getTF(wordItem);
 				wordHash.getIDF(wordItem);
 			}
+			sentWordCount++;
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		sentHeap.enqueue(sentItem);
-		// cout << sentStack.isEmpty() << endl;
+		sentItem->score /= sentWordCount;
 		sentStack.pop();
+		sentHeap.enqueue(sentItem);
 	}
 
-	for(int i=0; i<10; i++)
+
+	for(int i=0; i<5; i++)
 	{
 		Sent *sentItem =sentHeap.peek();
 		for(int i=0; i<sentItem->sentence.size(); i++)
 			cout << sentItem->sentence[i] << " ";
-		cout << endl << endl;
+		cout << sentItem->score << endl << endl;
 		sentHeap.dequeue();
 	}
 
