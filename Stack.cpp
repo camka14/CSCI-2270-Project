@@ -34,7 +34,6 @@ void Stack::pop()
 	if(!isEmpty()){
 		Sent *temp = stackHead;
 		stackHead = stackHead->next;
-		delete temp;
 	}
 	else{
 		cout << "Stack empty, cannot pop an item." << endl;

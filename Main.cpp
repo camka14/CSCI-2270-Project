@@ -65,6 +65,7 @@ int main(int argc, char const *argv[])
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
 		sentHeap.enqueue(sentItem);
+		// cout << sentStack.isEmpty() << endl;
 		sentStack.pop();
 	}
 
