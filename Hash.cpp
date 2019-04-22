@@ -104,7 +104,6 @@ void Hash::getTF(Word *word)
 void Hash::getIDF(Word *word)
 {
 	word->IDF = (float)log(totalCountRF/(1+word->countIDF));
-	// cout << word->IDF << endl;
 }
 
 void Hash::getIDFCount(string refrence)

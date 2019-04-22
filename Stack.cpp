@@ -34,7 +34,6 @@ void Stack::pop()
 	if(!isEmpty()){
 		Sent *temp = stackHead;
 		stackHead = stackHead->next;
-		delete temp;
 	}
 	else{
 		cout << "Stack empty, cannot pop an item." << endl;
@@ -43,11 +42,6 @@ void Stack::pop()
 
 Sent* Stack::peek()
 {
-	// for(int i=0; i<stackHead->sentence.size(); i++)
-	// {
-	// 	cout << stackHead->sentence[i] << " ";
-	// }
-	// cout << endl<<endl;
 	if(!isEmpty()){
 		return stackHead;
 	}else{
