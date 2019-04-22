@@ -105,6 +105,7 @@ void Heap::repairDownward(int nodeIndex) {
  	int temp;
 
  	//TODO
+
  	if(l < currentQueueSize && HeapArray[l]->score>HeapArray[largest]->score)
    		largest = l;
  	if(r < currentQueueSize && HeapArray[r]->score>HeapArray[largest]->score)
