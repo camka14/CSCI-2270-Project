@@ -104,13 +104,14 @@ void Hash::getTF(Word *word)
 void Hash::getIDF(Word *word)
 {
 	word->IDF = (float)log(totalCountRF/(1+word->countIDF));
+	// cout << word->IDF << endl;
 }
 
 void Hash::getIDFCount(string refrence)
 {
 	char letter;
 	string word;
-	
+
 	regex wordChar("[a-zA-Z]");
 	regex nonWordChar("[\\s|.|;|?|!]");
 	ifstream refText;
@@ -118,15 +119,14 @@ void Hash::getIDFCount(string refrence)
 
 	while(refText.get(letter))
 	{
-		letter = 's';
-		cout << letter << " " << regex_match(&letter,wordChar) << endl;
-		if(regex_match(&letter,wordChar)){
-			word += letter;
+		string letterS = "";
+		letterS+= letter;
+		if(regex_match(letterS,wordChar)){
+			word += letterS;
 		}
-		else if(regex_match(&letter,nonWordChar))
+		else if(regex_match(letterS,nonWordChar))
 		{
 			if(word != ""){
-				cout << word << endl;
 				if(isInTable(word)){
 					Word *wordItem = searchTable(word);
 					wordItem->countIDF++;

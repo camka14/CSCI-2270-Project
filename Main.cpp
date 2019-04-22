@@ -68,6 +68,14 @@ int main(int argc, char const *argv[])
 		sentStack.pop();
 	}
 
+	for(int i=0; i<10; i++)
+	{
+		Sent *sentItem =sentHeap.peek();
+		for(int i=0; i<sentItem->sentence.size(); i++)
+			cout << sentItem->sentence[i] << " ";
+		cout << endl << endl;
+		sentHeap.dequeue();
+	}
 
 	
 	mainText.close();
