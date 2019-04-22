@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <regex>
+#include <cmath>
 
 #include "Header.hpp"
 
@@ -31,7 +33,7 @@ void Hash::addWord(string word) {
 		}
 	}
 	else {
-		cout << "Already exists: " << word << endl;
+		incrementCount(word);
 	}
 }
 bool Hash::isInTable(string word) {
@@ -72,16 +74,15 @@ Word* Hash::createNode(string word, Word* next){
 	return node;
 }
 
-/* member functions */
 unsigned int Hash::getHash(string word) {
-	unsigned int​ hashValue = ​5381​; 
-    int ​length = word.​length​();
-    
-    for ​(​int​ i=​0​;i<length;i++) {
-        hashValue=((hashValue<<​5​)+hashValue) + word[i]; 
-    }
-    hashValue %= hashTableSize; 
-    return ​hashValue; 
+	unsigned int hashValue = 5381;
+	int length = word.length();
+
+	for(int i=0; i< length; i++) {
+		hashValue = ((hashValue <<5) + hashValue) + word[i];
+	}
+	hashValue %= hashTableSize;
+	return hashValue;
 }
 Word* Hash::searchTable(string word) {
 	int index = getHash(word);
