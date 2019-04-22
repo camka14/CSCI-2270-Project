@@ -13,7 +13,6 @@ int main(int argc, char const *argv[])
 	Word *wordItem;
 	bool sentEnd = false;
 	char letter;
-	int sentWordCount;
 
 	regex nonWord("[.|!|?]");
 	regex wordChar("[a-zA-Z]");
@@ -65,10 +64,8 @@ int main(int argc, char const *argv[])
 				wordHash.getTF(wordItem);
 				wordHash.getIDF(wordItem);
 			}
-			sentWordCount++;
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		sentItem->score /= sentWordCount;
 		sentStack.pop();
 		sentHeap.enqueue(sentItem);
 	}

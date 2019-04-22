@@ -28,7 +28,6 @@ void Heap::swap(Sent *a, Sent *b)
 void Heap::enqueue (Sent *sentence) {
 	if(isEmpty()) {
 		HeapArray[currentQueueSize] = sentence;
-		currentQueueSize++;
 	}
 	else if(isFull()) {
 		doubleArr();
@@ -117,8 +116,10 @@ void Heap::repairDownward(int nodeIndex) {
   }
 }
 
-void Heap::doubleArr() {
+void Heap::doubleArr()
+{
 	Sent **nArr = new Sent*[2*currentQueueSize];
+
 	for (int i=0; i <currentQueueSize; i++) {
 		cout << HeapArray[i] << endl;
 		nArr[i] = *(HeapArray+i);
