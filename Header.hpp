@@ -89,7 +89,6 @@ private:
     /* instance variables */
     Word** hashTable;
     int hashTableSize;
-    int numItems;
     int totalCountRF;
     int numCollisions;
 };
