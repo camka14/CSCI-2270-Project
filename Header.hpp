@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// word struct to store words of the text file
+// and reference document and their TF and IDF values
 struct Word
 {
 	string word;
@@ -18,13 +20,17 @@ struct Word
     Word* next;
 };
 
+// Sent struct to store each sentence (in the form of a vector of words)
+// and to store the sentences score (of importance)
 struct Sent
 {
 	vector<string> sentence;
 	float score = 0;
 	Sent *next = 0;
+	int num;
 };
 
+// initializing Stack class
 class Stack
 {
 public:

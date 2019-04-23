@@ -6,7 +6,10 @@
 #include "Header.hpp"
 
 using namespace std;
+//****This .cpp file contains all functions for setting up the hash table of word structs *****
 
+// creates the inital Hash table with a certain initialezed size 
+// the hash table is an array of pointers; therefore, each one is set to null
 Hash::Hash(int hashTableSize){
 	this->hashTableSize = hashTableSize;
 	hashTable = new Word*[hashTableSize];
@@ -15,9 +18,14 @@ Hash::Hash(int hashTableSize){
 	}
 	totalCountRF = 0;
 }
+
+//destructor
 Hash::~Hash(){
 
 }
+
+// Adds a word struct into the hashtable
+// if it already exists, increment text frequency (TF) value
 void Hash::addWord(string word) {
 
 	if(!isInTable(word))
@@ -36,6 +44,8 @@ void Hash::addWord(string word) {
 		incrementCount(word);
 	}
 }
+
+// Function to check whether or not the function exists in the table
 bool Hash::isInTable(string word) {
 	int index = getHash(word);
 
@@ -48,10 +58,14 @@ bool Hash::isInTable(string word) {
 	}
 	return false;
 }
+
+// function to find the pointer to the word struct and increment the TF count
 void Hash::incrementCount(string word) {
 	Word* item = searchTable(word);
 	item->countTF++;
 }
+
+// function to add up all of the words within the hash table/text file
 int Hash::getTotalNumWords() {
 	int count = 0;
 	Word* temp1 = hashTable[0];
@@ -64,6 +78,7 @@ int Hash::getTotalNumWords() {
 	return count;
 }
 
+// creates a new node with the word passed in
 Word* Hash::createNode(string word, Word* next){
 	Word* node = new Word;
 	node->word = word;
@@ -71,6 +86,7 @@ Word* Hash::createNode(string word, Word* next){
 	return node;
 }
 
+// Gets the hash value to index the word struct into hash table
 unsigned int Hash::getHash(string word)
 {
 	unsigned int hashValue = 5381;
@@ -83,7 +99,8 @@ unsigned int Hash::getHash(string word)
 	return hashValue;
 }
 
-
+// function to search through hash table and return the pointer to the word struct
+// that contains "word"
 Word* Hash::searchTable(string word) {
 	int index = getHash(word);
 
@@ -98,17 +115,19 @@ Word* Hash::searchTable(string word) {
 	return nullptr;
 }
 
+// function to calculate text frequency (TF) value for word
 void Hash::getTF(Word *word)
 {
 	word->TF = (float)log(1+word->countTF);
 }
 
+// function to get inverse document frequency value for the word (IDF)
 void Hash::getIDF(Word *word)
 {
 	word->IDF = (float)log(totalCountRF/(1+word->countIDF));
-	// cout << word->IDF << endl;
 }
 
+// function to get inverse document frequency value of a reference
 void Hash::getIDFCount(string refrence)
 {
 	char letter;
@@ -140,6 +159,8 @@ void Hash::getIDFCount(string refrence)
 	}
 }
 
+// finds and return pointer to the word struct 
+// of "word"
 Word* Hash::getWord(string word) {
 	return searchTable(word);
 }

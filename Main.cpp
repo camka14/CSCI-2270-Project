@@ -6,6 +6,10 @@ int main(int argc, char const *argv[])
 {
 	ifstream mainText;
 	string word;
+	string mainFileName;
+	string refFileName = "RefDoc.txt";
+	string input;
+	string output;
 	Stack sentStack;
 	Hash wordHash(500);
 	Heap sentHeap(20);
@@ -13,25 +17,60 @@ int main(int argc, char const *argv[])
 	Word *wordItem;
 	bool sentEnd = false;
 	char letter;
+	int count = 0;
+
+	cout << "=============================================" << endl;
+	cout << "   Please input the text file to summarize   " << endl;
+	cout << "=============================================" << endl << endl;
+	getline(cin,mainFileName);
+	cout << endl;
+	cout << "=============================================" << endl;
+	cout << "Would you like to use a custom refrence file?" << endl << "Y/N" << endl;
+	cout << "=============================================" << endl << endl;
+	while(input != "Y" && input != "y" && input != "N" && input != "n")
+	{
+		getline(cin,input);
+		cout << endl;
+		if(input == "Y" || input == "y"){
+			cout << "=============================================" << endl;
+			cout << "  Please input the refrence text file name   " << endl;
+			cout << "=============================================" << endl << endl;
+			getline(cin,refFileName);
+		}else if(input != "N" && input != "n"){
+			cout << input << endl;
+			cout << "Please input Y or N" << endl;
+		}else
+			cout << "Using default refrence file" << endl << endl;
+	}
+	cout << "=============================================" << endl;
+	cout << "  How many sentences do you want to output?  " << endl;
+	cout << "=============================================" << endl << endl;
+	getline(cin,output);
+	cout << endl;
+
+	cout << "=============================================" << endl;
+	cout << "Please Wait:" << endl;
+	cout << "Processing Text File..." << endl;
 
 	regex nonWord("[.|!|?]");
-	regex wordChar("[a-zA-Z]");
+	regex wordChar("[a-zA-Z||\\d]");
 	regex whiteSpace("[\\s]");
-	mainText.open(argv[1]);
+	mainText.open(mainFileName);
 
 	Sent *newSent = new Sent;
 
 	while(mainText.get(letter))
 	{
 		string letterS = "";
-		letterS += letter;
+		letterS+= letter;
 		if(regex_match(letterS,nonWord))
 		{
 			if(word != ""){
 				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
 				word = "";
-
+				count++;
+				newSent->num = count;
 				sentStack.push(newSent);
 				sentEnd = false;
 				newSent = new Sent;
@@ -52,7 +91,11 @@ int main(int argc, char const *argv[])
 		}
 	}
 
-	wordHash.getIDFCount(argv[2]);
+	cout << "Processing refrence file..." << endl;
+	cout << "=============================================" << endl;
+	cout << endl;
+
+	wordHash.getIDFCount(refFileName);
 
 	while(!sentStack.isEmpty())
 	{
@@ -66,21 +109,26 @@ int main(int argc, char const *argv[])
 			}
 			sentItem->score += wordItem->TF*wordItem->IDF;
 		}
-		sentHeap.enqueue(sentItem);
 		sentStack.pop();
+		sentHeap.enqueue(sentItem);
 	}
 
-	cout << "here" << endl;
-
-	for(int i=0; i<5; i++)
+	cout << "Here are your top " << output << " sentences:" << endl << endl;
+	for(int i=0; i<stoi(output); i++)
 	{
-		Sent *sentItem =sentHeap.peek();
+		Sent *sentItem = sentHeap.peek();
+		cout << "Sentence # " << sentItem->num << endl << endl;
 		for(int i=0; i<sentItem->sentence.size(); i++)
 			cout << sentItem->sentence[i] << " ";
-		cout << sentItem->score << endl << endl;
+		cout << endl << endl;
 		sentHeap.dequeue();
 	}
 
 	
 	mainText.close();
+
+	cout << "=============================================" << endl;
+	cout << "           Press any key to close            " << endl;
+	cout << "=============================================" << endl << endl;
+	getline(cin,input);
 }
