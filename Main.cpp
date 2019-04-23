@@ -23,6 +23,13 @@ int main(int argc, char const *argv[])
 	cout << "   Please input the text file to summarize   " << endl;
 	cout << "=============================================" << endl << endl;
 	getline(cin,mainFileName);
+	do{
+		mainText.open(mainFileName);
+		if(!mainText.is_open()){
+			cout << "Error opening file: Please input existing file name" << endl;
+			getline(cin,mainFileName);
+		}
+	}while(!mainText.is_open());
 	cout << endl;
 	cout << "=============================================" << endl;
 	cout << "Would you like to use a custom refrence file?" << endl << "Y/N" << endl;
@@ -55,7 +62,6 @@ int main(int argc, char const *argv[])
 	regex nonWord("[.|!|?]");
 	regex wordChar("[a-zA-Z||\\d]");
 	regex whiteSpace("[\\s]");
-	mainText.open(mainFileName);
 
 	Sent *newSent = new Sent;
 
