@@ -52,6 +52,7 @@ int main(int argc, char const *argv[])
 	cout << "=============================================" << endl;
 	cout << "  How many sentences do you want to output?  " << endl;
 	cout << "=============================================" << endl << endl;
+	
 	getline(cin,output);
 	cout << endl;
 
