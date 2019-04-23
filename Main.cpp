@@ -128,7 +128,7 @@ int main(int argc, char const *argv[])
 	mainText.close();
 
 	cout << "=============================================" << endl;
-	cout << "           Press any key to close            " << endl;
+	cout << "           Press Enter to Close            " << endl;
 	cout << "=============================================" << endl << endl;
 	getline(cin,input);
 }
