@@ -8,7 +8,7 @@
 
 using namespace std;
 
-// word struct to store words of the text file
+// Word struct to store words of the text file
 // and reference document and their TF and IDF values
 struct Word
 {
@@ -44,7 +44,7 @@ private:
 	Sent* stackHead; // pointer to the top of the stack
 };
 
-//This class is done
+
 class Heap
 {
 public:
@@ -81,18 +81,19 @@ public:
     void incrementCount(std::string word);
     void printTopN(int n);
     int getTotalNumWords();
+
+    // These Three functions get the scores and the count for each word
     void getIDFCount(string refCorpus);
     void getIDF(Word *word);
     void getTF(Word *word);
+    
     Word* getWord(string word);
     Word* createNode(string word, Word* next);
 
 private:
-    /* member functions */
     unsigned int getHash(std::string word);
     Word* searchTable(std::string word);
 
-    /* instance variables */
     Word** hashTable;
     int hashTableSize;
     int totalCountRF;

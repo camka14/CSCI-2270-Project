@@ -4,6 +4,7 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
+/// Declarations ///
 	ifstream mainText;
 	string word;
 	string mainFileName;
@@ -66,12 +67,14 @@ int main(int argc, char const *argv[])
 
 	Sent *newSent = new Sent;
 
+/// Reads in the main text file and stores the words in a hash and the sentences in a stack
 	while(mainText.get(letter))
 	{
 		string letterS = "";
 		letterS+= letter;
 		if(regex_match(letterS,nonWord))
 		{
+			// Stores sentence into stack
 			if(word != ""){
 				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
@@ -90,6 +93,7 @@ int main(int argc, char const *argv[])
 		}
 		else if(regex_match(letterS,whiteSpace))
 		{
+			// Stores word into a Hash
 			if(word != ""){
 				wordHash.addWord(word);
 				newSent->sentence.push_back(word);
@@ -102,13 +106,16 @@ int main(int argc, char const *argv[])
 	cout << "=============================================" << endl;
 	cout << endl;
 
+/// Reads in refrence document and counts each words occurance
 	wordHash.getIDFCount(refFileName);
 
+/// Goes through the stack, gets scores for each sentence, and stores into a heap
 	while(!sentStack.isEmpty())
 	{
 		Sent *sentItem = sentStack.peek();
 		for(int i=0; i<sentItem->sentence.size(); i++)
 		{
+			// Word Scoring
 			wordItem = wordHash.getWord(sentItem->sentence[i]);
 			if(wordItem->TF == 0){
 				wordHash.getTF(wordItem);

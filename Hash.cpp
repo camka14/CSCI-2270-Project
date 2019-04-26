@@ -127,7 +127,7 @@ void Hash::getIDF(Word *word)
 	word->IDF = (float)log(totalCountRF/(1+word->countIDF));
 }
 
-// function to get inverse document frequency value of a reference
+// function to get inverse document frequency count for each word
 void Hash::getIDFCount(string refrence)
 {
 	char letter;
